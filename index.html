@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcium Privacy Quest - Learn About Confidential Computing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
+    <div class="max-w-4xl mx-auto p-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="flex justify-center items-center mb-4">
+                <svg class="w-16 h-16 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl font-bold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                Arcium Privacy Quest
+            </h1>
+            <p class="text-gray-400">Learn how confidential computing protects your data!</p>
+            
+            <!-- Educational Info Box -->
+            <div class="mt-6 mx-auto max-w-2xl bg-blue-900/20 border border-blue-500/30 rounded-lg p-4 text-sm text-left">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="text-gray-300">
+                        <strong class="text-blue-400">Note:</strong> This is a learning game, not a real encrypted app. In a true Arcium application, your answers would be <strong>cryptographically encrypted</strong> before processing, computed on while still encrypted, and only you would see the decrypted result—without anyone ever seeing your original input!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Score Board -->
+        <div class="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl p-4 mb-6 border border-purple-700/50">
+            <div class="flex justify-between items-center">
+                <div>
+                    <span class="text-gray-400">Question:</span>
+                    <span class="text-white font-bold ml-2" id="current-question">1</span>
+                    <span class="text-gray-400"> / </span>
+                    <span class="text-gray-400" id="total-questions">6</span>
+                </div>
+                <div>
+                    <span class="text-gray-400">Score:</span>
+                    <span class="text-cyan-400 font-bold text-xl ml-2" id="score">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div id="game-container" class="fade-in">
+            <!-- Question Card -->
+            <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 mb-6 border border-gray-700 shadow-2xl">
+                <!-- Encryption Simulation Banner -->
+                <div id="encryption-banner" class="mb-6 bg-purple-900/20 border border-purple-500/30 rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-purple-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                            <span class="text-sm text-gray-300">
+                                <strong class="text-purple-400">With Arcium:</strong> Your choice would be encrypted as 
+                                <code class="bg-purple-900/30 px-2 py-0.5 rounded text-purple-300" id="encrypted-text">🔒 Encrypted</code>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="text-2xl font-bold mb-6 text-cyan-400" id="question-text"></h2>
+                
+                <!-- Answer Options -->
+                <div id="answers-container" class="space-y-4">
+                    <!-- Answers will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Explanation Card (Hidden initially) -->
+            <div id="explanation-card" class="hidden bg-gradient-to-br from-green-900/30 to-emerald-900/30 rounded-2xl p-6 border border-green-700/50 mb-6 fade-in">
+                <h3 class="text-xl font-bold mb-3 text-green-400">✓ Correct!</h3>
+                <p class="text-gray-300 leading-relaxed mb-4" id="explanation-text"></p>
+                <div class="bg-green-900/20 border-l-4 border-green-500 p-3 text-sm">
+                    <p class="text-gray-300">
+                        <strong class="text-green-400">💡 In Real Arcium:</strong> Your answer was processed on encrypted data. The system never saw your actual choice—only the encrypted version. Yet it still computed the correct result!
+                    </p>
+                </div>
+            </div>
+
+            <div id="wrong-card" class="hidden bg-gradient-to-br from-red-900/30 to-pink-900/30 rounded-2xl p-6 border border-red-700/50 mb-6 fade-in">
+                <h3 class="text-xl font-bold mb-3 text-red-400">✗ Not quite!</h3>
+                <p class="text-gray-300 leading-relaxed mb-4" id="wrong-text"></p>
+                <div class="bg-red-900/20 border-l-4 border-red-500 p-3 text-sm">
+                    <p class="text-gray-300">
+                        <strong class="text-red-400">💡 In Real Arcium:</strong> Even though your answer was wrong, it was still processed securely! Your choice remained encrypted throughout, protecting your privacy regardless of the outcome.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Next Button -->
+            <button id="next-btn" class="hidden w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105">
+                Next Question →
+            </button>
+        </div>
+
+        <!-- Results Screen (Hidden initially) -->
+        <div id="results-screen" class="hidden fade-in">
+            <div class="bg-gradient-to-br from-purple-900/30 to-blue-900/30 rounded-2xl p-8 border border-purple-700/50 text-center">
+                <svg class="w-24 h-24 mx-auto mb-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                </svg>
+                <h2 class="text-4xl font-bold mb-4 text-cyan-400">Quest Complete!</h2>
+                <p class="text-3xl mb-4">Your Score: <span class="text-white font-bold" id="final-score">0</span> / <span id="final-total">6</span></p>
+                <p class="text-xl mb-8 text-gray-300" id="result-message"></p>
+                
+                <div class="bg-gray-800/50 rounded-xl p-6 mb-6">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">What You Learned:</h3>
+                    <ul class="text-left space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="text-cyan-400 mr-3">•</span>
+                            <span>Arcium enables computation on encrypted data without exposing sensitive information</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-cyan-400 mr-3">•</span>
+                            <span>Multi-Party Computation (MPC) allows collaboration while keeping inputs private</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-cyan-400 mr-3">•</span>
+                            <span>Privacy is built into the infrastructure, not added as an afterthought</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-cyan-400 mr-3">•</span>
+                            <span>Decentralized networks eliminate single points of failure and trust</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button id="restart-btn" class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-bold py-4 px-8 rounded-xl transition-all duration-300 transform hover:scale-105">
+                    Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="./main.js"></script>
+</body>
+</html>
